@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ 	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd" >
+	
+	<context:component-scan base-package="com.ic.service">
+		<context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />
+	</context:component-scan>
+	
+	<dubbo:application name="ic-core"></dubbo:application>
+	<dubbo:registry address="zookeeper://localhost:2181"></dubbo:registry>
+
+	<!-- 要暴露的服务接口   -->
+	<bean id="userService" class="com.ic.service.impl.user.UserServiceImpl" />
+	<dubbo:service interface="com.ic.service.user.UserService" ref="userService" />  
+	
+	<bean id="ringService" class="com.ic.service.impl.ring.RingServiceImpl" />
+	<dubbo:service interface="com.ic.service.ring.RingService" ref="ringService" />  	
+</beans>
