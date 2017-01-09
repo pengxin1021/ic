@@ -1,5 +1,6 @@
 package com.ic.base.utils;
 
+import com.ic.base.constants.CommonConstants;
 import com.ic.base.exception.BusinessException;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -27,7 +28,7 @@ public class ImageUtil {
                 Thumbnails.of(bais).scale(scale).outputQuality(scale).toOutputStream(baos);
                 bytes = baos.toByteArray();
             } catch (IOException e) {
-                throw new BusinessException();
+                throw new BusinessException(CommonConstants.ErrorCode.ERROR_CODE_IMAGE_COMPRESS);
             }
         }
         System.out.println(bytes.length);
