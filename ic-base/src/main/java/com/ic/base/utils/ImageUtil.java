@@ -1,15 +1,19 @@
 package com.ic.base.utils;
 
-import com.ic.base.constants.CommonConstants;
-import com.ic.base.exception.BusinessException;
 import net.coobird.thumbnailator.Thumbnails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Created by perxin on 2017/1/6.
  */
 public class ImageUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
     /**
      * 压缩图片
@@ -20,7 +24,6 @@ public class ImageUtil {
     public static byte[] compressImage(byte[] bytes, double limitSize) {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         long size = bytes.length;
-        System.out.println(size);
         if (size >= limitSize * 1024 * 1024) {
             double scale = (limitSize * 1024 * 1024f) / size;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -28,63 +31,17 @@ public class ImageUtil {
                 Thumbnails.of(bais).scale(scale).outputQuality(scale).toOutputStream(baos);
                 bytes = baos.toByteArray();
             } catch (IOException e) {
-                throw new BusinessException(CommonConstants.ErrorCode.ERROR_CODE_IMAGE_COMPRESS);
+                logger.error("Compress image error!", e.getMessage());
             }
         }
-        System.out.println(bytes.length);
         return bytes;
     }
 
     //测试
     public static void main(String[] args) throws IOException {
-        File file = new File("E:\\IMG_1258(1).png");
-        FileInputStream fis = new FileInputStream(file);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] b = new byte[1024];
-        int n;
-        while ((n = fis.read(b)) != -1) {
-            bos.write(b, 0, n);
-        }
-        fis.close();
-        bos.close();
-        byte[] buffer = bos.toByteArray();
-
+        byte buffer[] = FileUtil.fileToByte("E:\\IMG_1258(1).png");
         byte[] bytes = compressImage(buffer, 2);
-
-        byte2File(bytes, "E:\\", "33.png");
+        FileUtil.byteToFile(bytes, "E:\\", "33.png");
     }
 
-    //测试
-    private static void byte2File(byte[] buf, String filePath, String fileName) {
-        BufferedOutputStream bos = null;
-        FileOutputStream fos = null;
-        File file = null;
-        try {
-            File dir = new File(filePath);
-            if (!dir.exists() && dir.isDirectory()) {
-                dir.mkdirs();
-            }
-            file = new File(filePath + File.separator + fileName);
-            fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-            bos.write(buf);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

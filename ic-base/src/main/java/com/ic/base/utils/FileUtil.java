@@ -1,5 +1,10 @@
 package com.ic.base.utils;
 
+import com.ic.base.constants.CommonConstants;
+import com.ic.base.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 
 /**
@@ -7,17 +12,83 @@ import java.io.*;
  */
 public class FileUtil {
 
-    public static byte[] fileToByte() {
-        return null;
+    private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+
+    /**
+     * 文件转字节
+     * @param filePath
+     * @return
+     */
+    public static byte[] fileToByte(String filePath) {
+        File file = new File(filePath);
+        FileInputStream fis = null;
+        byte buf[] = null;
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new BusinessException(CommonConstants.ErrorCode.ERROR_CODE_CUSTOM, e.getMessage());
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        buf = inputStreamToByte(fis);
+        return buf;
     }
 
-    public static void byteToFile() {
-
+    /**
+     * 字节转文件
+     * @param buf
+     * @param filePath
+     * @param fileName
+     */
+    public static void byteToFile(byte buf[], String filePath, String fileName) {
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        File dir = new File(filePath);
+        if (!dir.exists() && dir.isDirectory()) {
+            dir.mkdirs();
+        }
+        File file = new File(filePath + File.separator + fileName);
+        try {
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            bos.write(buf);
+        } catch (IOException e) {
+            logger.error("File write Error", e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logger.error("FileOutputStream close Error", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    logger.error("BufferedOutputStream close Error", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
+    /**
+     * InputStream转字节
+     * @param inputStream
+     * @return
+     */
     public static byte[] inputStreamToByte(InputStream inputStream) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
+        byte buf[] = new byte[1024];
         int n = 0;
         try {
             while ((n = inputStream.read(buf)) != -1) {
@@ -25,15 +96,21 @@ public class FileUtil {
             }
             baos.close();
         } catch (IOException e) {
+            logger.error("InputStream to byte[] error", e.getMessage());
             e.printStackTrace();
         }
-        byte[] bytes = baos.toByteArray();
+        byte bytes[] = baos.toByteArray();
         return bytes;
     }
 
-    public static InputStream byteToInputStream() {
-//        ByteArrayInputStream bais = new ByteArrayInputStream();
-        return null;
+    /**
+     * 字节转InputStream
+     * @param bytes
+     * @return
+     */
+    public static InputStream byteToInputStream(byte[] bytes) {
+        ByteArrayInputStream buf = new ByteArrayInputStream(bytes);
+        return buf;
     }
 
     public static void main(String[] args) {

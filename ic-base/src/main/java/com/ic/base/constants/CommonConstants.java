@@ -11,8 +11,7 @@ public class CommonConstants {
 
     public static enum ErrorCode {
 
-        ERROR_CODE_CUSTOM(0xFF0000, "自定义"),
-        ERROR_CODE_IMAGE_COMPRESS(0xFF1000, "图片压缩出错");
+        ERROR_CODE_CUSTOM(0xFF0000, "自定义");
 
         private Integer code;
 
