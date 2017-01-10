@@ -12,6 +12,7 @@
     <properties>
         <!--<google.code.version>2.3.2</google.code.version>-->
         <thumbnailator.version>0.4.8</thumbnailator.version>
+        <fastjson.version>1.2.6</fastjson.version>
     </properties>
 
     <dependencies>
@@ -107,6 +108,12 @@
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
             <version>${thumbnailator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 

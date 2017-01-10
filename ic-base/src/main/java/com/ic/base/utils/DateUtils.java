@@ -114,8 +114,8 @@ public class DateUtils {
 	 * @description 获取两个时间相差天数
 	 * @author xin
 	 * @date 2016年7月30日 下午3:24:18
-	 * @param date1
-	 * @param date2
+	 * @param dateStart
+	 * @param dateEnd
 	 * @return
 	 */
 	public static int getBetweenDays(Date dateStart, Date dateEnd) {

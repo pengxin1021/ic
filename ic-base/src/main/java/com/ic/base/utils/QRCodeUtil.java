@@ -7,17 +7,20 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
 import java.util.Hashtable;
 
 public class QRCodeUtil {
-	
-	public static BufferedImage getQRCode(String content, int width, int height) {
-		Hashtable<Object, Object> hints = new Hashtable<Object, Object>();
+
+	/**
+	 * 生成二维码
+	 * @param content
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static BufferedImage genetateQRCode(String content, int width, int height) {
+		Hashtable<Object, Object> hints = new Hashtable();
 		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 		BufferedImage bi = null;
 		try {
@@ -29,17 +32,8 @@ public class QRCodeUtil {
 		return bi;
 	}
 	
-	public static void bufferedImageToFile(BufferedImage bi, String type, String path) {
-		Long time = new Date().getTime();
-		try {
-			ImageIO.write(bi, type, new File(time + "." + type));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static void main(String[] args) {
-		BufferedImage bi = getQRCode("www.baidu.com", 300, 300);
-		bufferedImageToFile(bi, "png", null);
+		BufferedImage bi = genetateQRCode("www.baidu.com", 300, 300);
+		ImageUtil.bufferedImageToFile(bi, "c:\\", "a");
 	}
 }

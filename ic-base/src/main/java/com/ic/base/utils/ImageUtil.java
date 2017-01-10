@@ -1,11 +1,16 @@
 package com.ic.base.utils;
 
+import com.ic.base.constants.CommonConstants;
+import com.ic.base.exception.BusinessException;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -14,6 +19,21 @@ import java.io.IOException;
 public class ImageUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
+
+    /**
+     * BufferedImage转文件
+     * @param bi
+     * @param imagePath
+     * @param imageName
+     */
+    public static void bufferedImageToFile(BufferedImage bi, String imagePath, String imageName) {
+        String type = FileUtil.getFileExtension(imageName);
+        try {
+            ImageIO.write(bi, type, new File(imagePath + File.separator + imageName));
+        } catch (IOException e) {
+            throw new BusinessException(CommonConstants.ErrorCode.ERROR_CODE_CUSTOM, e.getMessage());
+        }
+    }
 
     /**
      * 压缩图片
@@ -37,7 +57,6 @@ public class ImageUtil {
         return bytes;
     }
 
-    //测试
     public static void main(String[] args) throws IOException {
         byte buffer[] = FileUtil.fileToByte("E:\\IMG_1258(1).png");
         byte[] bytes = compressImage(buffer, 2);

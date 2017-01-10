@@ -2,6 +2,7 @@ package com.ic.base.utils;
 
 import com.ic.base.constants.CommonConstants;
 import com.ic.base.exception.BusinessException;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,6 +112,18 @@ public class FileUtil {
     public static InputStream byteToInputStream(byte[] bytes) {
         ByteArrayInputStream buf = new ByteArrayInputStream(bytes);
         return buf;
+    }
+
+    /**
+     * 获取文件扩展名
+     * @param fileName
+     * @return
+     */
+    public static String getFileExtension(String fileName) {
+        if (StringUtils.isEmpty(fileName)) {
+            return null;
+        }
+        return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     }
 
     public static void main(String[] args) {
