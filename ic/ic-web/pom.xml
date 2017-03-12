@@ -4,12 +4,13 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com</groupId>
+		<groupId>com.ic</groupId>
 		<artifactId>ic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.ic</groupId>
 	<artifactId>ic-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>ic-web</name>
 	<url>http://maven.apache.org</url>
